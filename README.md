@@ -17,3 +17,14 @@ Options:
  
  --debug: Debug mode
 
+==================================================================
+
+All files must be compressed (tar, gzip or zip) with this structure:
+
+ - text.md
+ - Pictures/
+ - Pictures/*
+ 
+ 
+Because LibreOffice implementation the index of the odt file must be manually updated when file is generated.
+The cover of the document is not included (WIP)
