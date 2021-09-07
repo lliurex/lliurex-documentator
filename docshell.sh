@@ -135,6 +135,7 @@ function process_args()
                 ;;
             -d|--md-directory)
                 MD_DIR=$2
+                shift
                 ;;
             -o|--output)
                 OUTPUT=$2
