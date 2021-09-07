@@ -13,7 +13,7 @@ Options:
 
  -d --md-directory: Directory with markdown files to process (default /tmp/documents)
  
- -o --output: Output file (default /home/lliurex/doc_20210907_1128.odt)
+ -o --output: Output file (default /home/lliurex/doc_YYYYMMDD_HHmm.odt)
  
  --debug: Debug mode
 
