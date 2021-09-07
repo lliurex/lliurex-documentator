@@ -2,6 +2,7 @@
 Shell script that generates internal documentation from partial documents.
 
 Usage: ./docshell.sh OPTIONS
+
 Generates an .odt file from markdown files (compressed) present at specified dir.
 
 Options:
