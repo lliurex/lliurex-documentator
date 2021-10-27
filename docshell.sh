@@ -72,23 +72,34 @@ function process_file()
     esac
 }
 
+#process_wrkfile()
+#{
+#    #md->latex->odt
+#    [ -z $DEBUG ] || VERBOSE="--verbose"
+#    #First step, convert markdown to latex
+#    CMD="pandoc $VERBOSE ${WRKFILE} -f markdown -t latex -s -o $WRKFILE.tex  --metadata lang=es-ES"
+#    debug "$CMD"
+#    eval $CMD
+#    #2n: Fix formats for odt
+#    sed -i '/^\\def\\labelenumi{\\arabic{enumi}.}$/d' ${WRKFILE}.tex
+#    awk -i inplace 'BEGIN {printcontrol=0 }; {if ( $0=="\\begin{document}") {print $0;printcontrol=2}; if ($0=="\\newpage") {printcontrol=0};if ($0=="\\begin{enumerate}" || $0=="\\end{enumerate}")  printcontrol=1; if ( printcontrol==0 ){ print $0};if (printcontrol!=2) {printcontrol=0}}' ${WRKFILE}.tex
+#    #Last: Generate odt with associated template
+#    CMD="pandoc $VERBOSE  -f latex -t odt -o $OUTPUT ${WRKFILE}.tex --reference-doc=$ODT_TPL --top-level-division=section --resource-path=$WRKDIR --toc"
+#    debug "$CMD"
+#    eval $CMD
+#    debug "Generated ${WRKFILE}.tex"
+#}
+
 process_wrkfile()
 {
-    #md->latex->odt
+
     [ -z $DEBUG ] || VERBOSE="--verbose"
-    #First step, convert markdown to latex
-    CMD="pandoc $VERBOSE ${WRKFILE} -f markdown -t latex -s -o $WRKFILE.tex  --metadata lang=es-ES"
+    CMD="pandoc $VERBOSE ${WRKFILE} -f markdown -t odt -o salida.odt  --top-level-division=section --resource-path=$WRKDIR --metadata lang=es-ES"
     debug "$CMD"
     eval $CMD
-    #2n: Fix formats for odt
-    sed -i '/^\\def\\labelenumi{\\arabic{enumi}.}$/d' ${WRKFILE}.tex
-    awk -i inplace 'BEGIN {printcontrol=0 }; {if ( $0=="\\begin{document}") {print $0;printcontrol=2}; if ($0=="\\newpage") {printcontrol=0};if ($0=="\\begin{enumerate}" || $0=="\\end{enumerate}")  printcontrol=1; if ( printcontrol==0 ){ print $0};if (printcontrol!=2) {printcontrol=0}}' ${WRKFILE}.tex
-    #Last: Generate odt with associated template
-    CMD="pandoc $VERBOSE  -f latex -t odt -o $OUTPUT ${WRKFILE}.tex --reference-doc=$ODT_TPL --top-level-division=section --resource-path=$WRKDIR --toc"
-    debug "$CMD"
-    eval $CMD
-    debug "Generated ${WRKFILE}.tex"
+
 }
+
 
 function process_md_dir(){
     for md in $(ls -1 $MD_DIR)
