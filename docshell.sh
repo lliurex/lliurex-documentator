@@ -30,7 +30,10 @@ function uncompress()
             tar -xvf ../$1
             ;;
         "zip")
-            unzip x ../$1
+	    cd ..
+	    rm -r $BASENAME
+            unzip $1
+	    cd $BASENAME
             ;;
         "gzip")
             gzip -d ../$1
@@ -38,8 +41,10 @@ function uncompress()
     esac
     mkdir $WRKDIR/Pictures
     cp Pictures/* $WRKDIR/Pictures
+    for ff in $(ls *.md); do
+    	process_md_file $ff
+    done
     cd $OLD
-    process_md_file ${BASENAME}/${BASENAME}.md 
 }
 
 function process_md_file()
@@ -47,8 +52,8 @@ function process_md_file()
     debug "Adding ${MD_DIR}/$1"
     #It will be easy with a pandoc filter but for testing purposes...
     #Deletes numbered index from section headers
-    sed  's/^1. *\(.*\[\]{#anchor}*\)/\\newpage\n\0/g' ${MD_DIR}/${1} >> $WRKFILE
-    echo $ODT_PB >> $WRKFILE
+#    sed  's/^1. *\(.*\[\]{#anchor}*\)/\\newpage\n\0/g' ${MD_DIR}/${1} >> $WRKFILE
+    sed 's/\(!\[.*\](.*)\)/\1{width=100%}/g' ${1} >> $WRKFILE
     echo "" >> $WRKFILE
 }
 
@@ -105,8 +110,8 @@ function process_md_dir(){
     for md in $(ls -1 $MD_DIR)
     do
         #Force only .md files. don't enable, testing purposes.
-        if [ $FORCE_ONLY_MD_EXTENSION -ne 0 ]
-        then
+        if [ "$FORCE_ONLY_MD_EXTENSION" != "0" ]
+        then 
             [[ ${md//*.md/1} == 1 ]] && process_file $md
         else
             process_file $md
