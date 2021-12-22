@@ -72,7 +72,7 @@ function process_file()
             uncompress $1 "gzip"
             ;;
         "text/plain")
-            process_md_file $1
+            process_md_file ${MD_DIR}/$1
             ;;
     esac
 }
